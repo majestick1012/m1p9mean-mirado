@@ -3,7 +3,7 @@ var app = express();
 var bodyParser = require('body-parser');
 const res = require('express/lib/response');
 var MongoClient = require('mongodb').MongoClient;
-var connectionString = 'mongodb+srv://<username>:<password>@cluster0.yv7eh.mongodb.net/test?retryWrites=true&w=majority';
+var connectionString = 'mongodb+srv://<username>:<password>@cluster0.mlnc0.mongodb.net/sample_restaurants?retryWrites=true&w=majority';
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static('public'));
 app.use(bodyParser.json());
