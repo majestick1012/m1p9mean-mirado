@@ -1,22 +1,56 @@
 const res = require('express/lib/response');
 var express = require('express');
+var nodemailer = require('nodemailer');
 const path = require('path');
 var app = express();
 var bodyParser = require('body-parser');
 var MongoClient = require('mongodb').MongoClient;
+
 // Variables d'environnement
 var connectionString = process.env.CONNECTION_STRING;
 var mode = process.env.NODE_ENV;
 var port = process.env.PORT || 3000;
 
+// ExpressJS
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/frontend/dist/frontend'));
 app.use(bodyParser.json());
 app.set('view engine', 'ejs');
+
 var db = {};
 
-app.get('/*', function (request, response) {
+app.get('/', function (request, response) {
+    console.log('Bienvenue');
     response.sendFile(path.join(__dirname + '/frontend/dist/frontend/index.html'));
+});
+
+app.get('/gmail', function (request, response) {
+    // OAuth
+    let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            type: 'OAuth2',
+            user: process.env.MAIL_USERNAME,
+            pass: process.env.MAIL_PASSWORD,
+            clientId: process.env.OAUTH_CLIENTID,
+            clientSecret: process.env.OAUTH_CLIENT_SECRET,
+            refreshToken: process.env.OAUTH_REFRESH_TOKEN
+        }
+    });
+    let mailOptions = {
+        from: process.env.MAIL_USERNAME,
+        to: 'majestick1012@gmail.com',
+        subject: '[TEST] Nodemailer Project MEAN',
+        text: 'Hi from your nodemailer project.'
+    };
+    transporter.sendMail(mailOptions, function (err, data) {
+        if (err) {
+            console.log("Error " + err);
+        } else {
+            console.log("Email test sent successfully");
+        }
+        response.redirect('/');
+    });
 });
 
 
@@ -26,15 +60,13 @@ MongoClient.connect(connectionString, { useUnifiedTopology: true }).then(client 
     var restaurantsCollection = db.collection('restaurants');
 });
 
-// app.get('/', (req, res) => {
-//     //  res.send('Hello world');
-//     //  res.sendFile(__dirname+'/index.html');
-//     db.collection('restaurants').find().toArray().then(results => {
-//         res.render('index.ejs', { quotes: results });
-//         console.log(results);
-//     }).catch(error => console.error(error));
+app.get('/restaurants', (req, res) => {
+    db.collection('restaurants').find().toArray().then(results => {
+        console.log(results);
+        res.redirect('/');
+    }).catch(error => console.error(error));
 
-// });
+});
 
 app.post('/restaurants', (req, res) => {
     db.collection('restaurants').insertOne(req.body).then(result => {
