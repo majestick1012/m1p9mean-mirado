@@ -15,7 +15,7 @@ app.set('view engine', 'ejs');
 var db = {};
 
 app.get('/*', function (request, response) {
-    response.sendFile(path.join(__dirname + '/frontend/dist/frontend/index.html'));
+    response.sendFile(__dirname + '/frontend/dist/frontend/index.html');
 });
 
 
