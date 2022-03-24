@@ -1,5 +1,6 @@
 const res = require('express/lib/response');
 var express = require('express');
+var path = require('path');
 var app = express();
 var bodyParser = require('body-parser');
 var MongoClient = require('mongodb').MongoClient;
@@ -15,7 +16,7 @@ app.set('view engine', 'ejs');
 var db = {};
 
 app.get('/*', function (request, response) {
-    response.sendFile(__dirname + '/frontend/dist/frontend/index.html');
+    response.sendFile(path.join(__dirname + '/frontend/dist/frontend/index.html'));
 });
 
 
