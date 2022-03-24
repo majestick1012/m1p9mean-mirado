@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MY APP</title>
+</head>
+<body style="background-color: aliceblue;">
+<div style="border: solid 1px; height: auto;  border-radius: 10px; height:80px; padding-left: 15px;">
+    <h1 style="vertical-align: middle;"> May Node and Express be with you. </h1>
+</div>
+
+
+
+<table width="100%">
+    <th style="width: 40%;">
+        <div style="border: solid 1px; height: 170px; border-radius: 10px; text-align: left; padding-left: 15px;">
+            <form action="/quotes" method="POST">
+                <p><h1>Add quote</h1></p>
+                <input type="text" placeholder="name" name="name" id="namenode">
+                <input type="text" placeholder="quote" name="quote" id="quotenode">
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </th>
+    <th style="width:30%;">
+    <div style="border: solid 1px; height: 170px; border-radius: 10px; text-align: left; padding-left: 15px;">
+        <h2>Darth Vadar invades!</h2>
+        <p>Replace first Yoda's quote with a quote written by Darth Vadar</p>
+        <button id="update-button">Replace Yoda's quote</button>          
+    </div>
+    </th>
+    <th style="width: 30%;">
+        <div style="border: solid 1px; height: 170px; border-radius: 10px; text-align: left; padding-left: 15px;">
+            <h2>Darth Vadar invades!</h2>
+            <p>
+                Delete one Darth Vadar's quote. Does nothing if there are no
+                more Darth
+                Vadar's quote
+                </p>       
+            <button id="delete-button">Delete Darth Vadar's quote</button>    
+        </div>
+    </th>
+    
+
+</table>       
+
+
+
+
+<div style="border: solid 1px; height: auto; border-radius: 10px; padding-left: 15px;">
+    <h1>Quotes</h1>
+    <ul class="quotes">
+        <% for(var i = 0; i < quotes.length;i++) { %>
+        
+        <li class="quote">
+            <h3 id="quote_<%= i %>"><%= quotes[i].name %> :
+            <%= quotes[i].quote %></h3>
+            <button id="<%= quotes[i].name %>" onclick="updated(this)">update</button>
+            <button id="<%= quotes[i].name %>" onclick="deleted(this)">delete</button>
+        </li>
+        <% } %>
+    </ul>
+</div>
+        <div id="message"></div>
+        <script src="/main.js"></script>
+</body>
+</html>
