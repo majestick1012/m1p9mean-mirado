@@ -1,1 +1,1 @@
-web: sh -c 'cd ./frontend/ && ng build && cd ../backend/ && npm run prod'
+web: npm --prefix ./backend/ run prod
