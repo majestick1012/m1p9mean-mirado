@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "postinstall": "npm install && ng build"
+    "postinstall": "ng build"
   },
   "private": true,
   "dependencies": {
