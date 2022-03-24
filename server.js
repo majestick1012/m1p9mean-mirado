@@ -6,7 +6,7 @@ var MongoClient = require('mongodb').MongoClient;
 // Variables d'environnement
 var connectionString = process.env.CONNECTION_STRING;
 var mode = process.env.NODE_ENV;
-var port = process.env.PORT;
+var port = process.env.PORT || 3000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/frontend/dist/frontend'));
@@ -83,7 +83,8 @@ app.delete('/restaurants', (req, res) => {
         .catch(error => console.error(error))
 });
 
-app.listen(port, function loadserver() {
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, '0.0.0.0', function loadserver() {
     console.log('Mode: ' + mode);
     console.log(`Launching the app ${process.env.APP_NAME}`);
     console.log('Listening on port: ' + port);
