@@ -6,13 +6,13 @@ var MongoClient = require('mongodb').MongoClient;
 var connectionString = process.env.CONNECTION_STRING;
 var mode = process.env.NODE_ENV;
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static('../frontend/dist/frontend'));
+app.use(express.static(__dirname + '/frontend/dist/frontend'));
 app.use(bodyParser.json());
 app.set('view engine', 'ejs');
 var db = {};
 
 app.get('/*', function (request, response) {
-    response.sendFile(path.join(__dirname, '../frontend/dist/frontend/index.html'));
+    response.sendFile(path.join(__dirname + '/frontend/dist/frontend/index.html'));
 });
 
 
@@ -22,15 +22,15 @@ MongoClient.connect(connectionString, { useUnifiedTopology: true }).then(client 
     var restaurantsCollection = db.collection('restaurants');
 });
 
-app.get('/', (req, res) => {
-    //  res.send('Hello world');
-    //  res.sendFile(__dirname+'/index.html');
-    db.collection('restaurants').find().toArray().then(results => {
-        res.render('index.ejs', { quotes: results });
-        console.log(results);
-    }).catch(error => console.error(error));
+// app.get('/', (req, res) => {
+//     //  res.send('Hello world');
+//     //  res.sendFile(__dirname+'/index.html');
+//     db.collection('restaurants').find().toArray().then(results => {
+//         res.render('index.ejs', { quotes: results });
+//         console.log(results);
+//     }).catch(error => console.error(error));
 
-});
+// });
 
 app.post('/restaurants', (req, res) => {
     db.collection('restaurants').insertOne(req.body).then(result => {
