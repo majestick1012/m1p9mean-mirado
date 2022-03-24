@@ -1,6 +1,6 @@
 const res = require('express/lib/response');
 var express = require('express');
-var path = require('path');
+const path = require('path');
 var app = express();
 var bodyParser = require('body-parser');
 var MongoClient = require('mongodb').MongoClient;
