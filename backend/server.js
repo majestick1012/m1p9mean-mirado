@@ -3,16 +3,15 @@ var app = express();
 var bodyParser = require('body-parser');
 const res = require('express/lib/response');
 var MongoClient = require('mongodb').MongoClient;
-var connectionString = 'mongodb+srv://<username>:<password>@cluster0.mlnc0.mongodb.net/sample_restaurants?retryWrites=true&w=majority';
+var connectionString = `${process.env.CONNECTION_STRING}`;
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static('public'));
 app.use(bodyParser.json());
 app.set('view engine','ejs');
 var db = {};
 
-
 MongoClient.connect(connectionString,{useUnifiedTopology: true}).then(client => {
-    console.log('Connected to Database');
+    console.log('Connected to ' + `${process.env.NODE_ENV}` +' database ');
     db = client.db('star-wars-quotes');
     var quotesCollection = db.collection('quotes');
     });
@@ -82,5 +81,8 @@ app.delete('/quotes',(req,res)=>
 
 app.listen(3000,function loadserver()
 {
-    console.log('listening on 3000');
+    console.log(`Mode: ${process.env.NODE_ENV}`);
+    console.log(`Launching the app ${process.env.APP_NAME}`);
+    console.log('Listening on port: 3000');
+    console.log('Connecting to ' + `${process.env.NODE_ENV}` + ' database...');
 });
