@@ -20,6 +20,7 @@ app.set('view engine', 'ejs');
 var db = {};
 
 app.get('/', function (request, response) {
+    console.log('Bienvenue');
     response.sendFile(path.join(__dirname + '/frontend/dist/frontend/index.html'));
 });
 
@@ -48,6 +49,7 @@ app.get('/gmail', function (request, response) {
         } else {
             console.log("Email test sent successfully");
         }
+        response.redirect('/');
     });
 });
 
@@ -58,15 +60,13 @@ MongoClient.connect(connectionString, { useUnifiedTopology: true }).then(client 
     var restaurantsCollection = db.collection('restaurants');
 });
 
-// app.get('/', (req, res) => {
-//     //  res.send('Hello world');
-//     //  res.sendFile(__dirname+'/index.html');
-//     db.collection('restaurants').find().toArray().then(results => {
-//         res.render('index.ejs', { quotes: results });
-//         console.log(results);
-//     }).catch(error => console.error(error));
+app.get('/restaurants', (req, res) => {
+    db.collection('restaurants').find().toArray().then(results => {
+        console.log(results);
+        res.redirect('/');
+    }).catch(error => console.error(error));
 
-// });
+});
 
 app.post('/restaurants', (req, res) => {
     db.collection('restaurants').insertOne(req.body).then(result => {
