@@ -10,7 +10,7 @@
     "prod": "env-cmd -f ./env/.env.prod nodemon server.js",
     "heroku-postbuild": "cd frontend/ && npm install"
   },
-  "author": "",
+  "author": "R.H.Mirado",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.2",
