@@ -1,47 +1,50 @@
+const res = require('express/lib/response');
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
-const res = require('express/lib/response');
 var MongoClient = require('mongodb').MongoClient;
-var connectionString = `${process.env.CONNECTION_STRING}`;
-app.use(bodyParser.urlencoded({extended:true}));
-app.use(express.static('public'));
+var connectionString = process.env.CONNECTION_STRING;
+var mode = process.env.NODE_ENV;
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static('../frontend/dist/frontend'));
 app.use(bodyParser.json());
-app.set('view engine','ejs');
+app.set('view engine', 'ejs');
 var db = {};
 
-MongoClient.connect(connectionString,{useUnifiedTopology: true}).then(client => {
-    console.log('Connected to ' + `${process.env.NODE_ENV}` +' database ');
-    db = client.db('star-wars-quotes');
-    var quotesCollection = db.collection('quotes');
-    });
-
-app.get('/',(req,res)=>
-{
-//  res.send('Hello world');
-//  res.sendFile(__dirname+'/index.html');
- db.collection('quotes').find().toArray().then(results =>
-    {
-        res.render('index.ejs',{quotes : results});
-        console.log(results);
-    }).catch(error=> console.error(error));
-    
+app.get('/*', function (request, response) {
+    response.sendFile(path.join(__dirname, '../frontend/dist/frontend/index.html'));
 });
 
-app.post('/quotes', (req, res) => {
-        db.collection('quotes').insertOne(req.body).then(result=>
-            {
-                res.redirect('/');
-                console.log(result);
-            }).catch(error=>{console.log(error)});
-        // console.log('insertion fait');
-        // console.log(req.body);
-    });
 
-app.put('/quotes', (req, res) => {
-    
-    db.collection('quotes').findOneAndUpdate(
-        {name: req.body.name},
+MongoClient.connect(connectionString, { useUnifiedTopology: true }).then(client => {
+    console.log('Connected to ' + mode + ' database ');
+    db = client.db('sample_restaurants');
+    var restaurantsCollection = db.collection('restaurants');
+});
+
+app.get('/', (req, res) => {
+    //  res.send('Hello world');
+    //  res.sendFile(__dirname+'/index.html');
+    db.collection('restaurants').find().toArray().then(results => {
+        res.render('index.ejs', { quotes: results });
+        console.log(results);
+    }).catch(error => console.error(error));
+
+});
+
+app.post('/restaurants', (req, res) => {
+    db.collection('restaurants').insertOne(req.body).then(result => {
+        res.redirect('/');
+        console.log(result);
+    }).catch(error => { console.log(error) });
+    // console.log('insertion fait');
+    // console.log(req.body);
+});
+
+app.put('/restaurants', (req, res) => {
+
+    db.collection('restaurants').findOneAndUpdate(
+        { name: req.body.name },
         {
             $set:
             {
@@ -52,37 +55,34 @@ app.put('/quotes', (req, res) => {
         {
             upsert: true
         }
-        
-    ).then(result=>{  res.redirect('/'); console.log(req.body.name);})
-    .catch(error=> console.error(error))
+
+    ).then(result => { res.redirect('/'); console.log(req.body.name); })
+        .catch(error => console.error(error))
 });
 
-app.delete('/quotes',(req,res)=>
-{
+app.delete('/restaurants', (req, res) => {
     console.log(req.body.name);
-    db.collection('quotes').deleteOne(
-        {name: req.body.name}
-        
+    db.collection('restaurants').deleteOne(
+        { name: req.body.name }
+
     )
-    .then(result=>{
-    if(result.deletedCount ===0){
-        //return res.json('No quote to delete');
-        
-        console.log("No quote to delete");
-    }
-    else
-    {
-        console.log("deleted quote");
-    }
-    res.redirect('/');
-})
-    .catch(error=> console.error(error))
+        .then(result => {
+            if (result.deletedCount === 0) {
+                //return res.json('No quote to delete');
+
+                console.log("No restaurant to delete");
+            }
+            else {
+                console.log("deleted quote");
+            }
+            res.redirect('/');
+        })
+        .catch(error => console.error(error))
 });
 
-app.listen(3000,function loadserver()
-{
-    console.log(`Mode: ${process.env.NODE_ENV}`);
+app.listen(3000, function loadserver() {
+    console.log('Mode: ' + mode);
     console.log(`Launching the app ${process.env.APP_NAME}`);
     console.log('Listening on port: 3000');
-    console.log('Connecting to ' + `${process.env.NODE_ENV}` + ' database...');
+    console.log('Connecting to ' + mode + ' database...');
 });
