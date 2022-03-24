@@ -3,8 +3,11 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var MongoClient = require('mongodb').MongoClient;
+// Variables d'environnement
 var connectionString = process.env.CONNECTION_STRING;
 var mode = process.env.NODE_ENV;
+var port = process.env.PORT;
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/frontend/dist/frontend'));
 app.use(bodyParser.json());
@@ -80,9 +83,9 @@ app.delete('/restaurants', (req, res) => {
         .catch(error => console.error(error))
 });
 
-app.listen(3000, function loadserver() {
+app.listen(port, function loadserver() {
     console.log('Mode: ' + mode);
     console.log(`Launching the app ${process.env.APP_NAME}`);
-    console.log('Listening on port: 3000');
+    console.log('Listening on port: ' + port);
     console.log('Connecting to ' + mode + ' database...');
 });
