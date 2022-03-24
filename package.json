@@ -9,7 +9,7 @@
     "dev": "env-cmd -f ./env/.env.dev nodemon server.js",
     "prod": "env-cmd -f ./env/.env.prod nodemon server.js",
     "heroku-postbuild": "cd ./frontend && npm install",
-    "postinstall": "npm run build"
+    "postinstall": "ng build"
   },
   "author": "",
   "license": "ISC",
