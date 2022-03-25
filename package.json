@@ -11,7 +11,7 @@
     "build": "cd frontend && npm install",
     "postinstall": "npm run build"
   },
-  "author": "R.H.Mirado",
+  "author": "RANDRIAMBOLOLONA Henintsoa Mirado",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.2",
