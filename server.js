@@ -13,7 +13,7 @@ var port = process.env.PORT || 3000;
 
 // ExpressJS
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(__dirname + '/frontend/dist/frontend'));
+app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 app.set('view engine', 'ejs');
 
@@ -21,7 +21,7 @@ var db = {};
 
 app.get('/', function (request, response) {
     console.log('Bienvenue');
-    response.sendFile(path.join(__dirname + '/frontend/dist/frontend/index.html'));
+    response.sendFile(path.join(__dirname + '/public/index.html'));
 });
 
 app.get('/gmail', function (request, response) {
@@ -120,6 +120,6 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', function loadserver() {
     console.log('Mode: ' + mode);
     console.log(`Launching the app ${process.env.APP_NAME}`);
-    console.log('Listening on port: ' + port);
+    console.log('Listening on port: ' + PORT);
     console.log('Connecting to ' + mode + ' database...');
 });

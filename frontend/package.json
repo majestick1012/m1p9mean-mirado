@@ -1,10 +1,10 @@
 {
-  "name": "frontend",
+  "name": "m1p9mean-mirado",
   "version": "0.1.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --output-path=../public",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
