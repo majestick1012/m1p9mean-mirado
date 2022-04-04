@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build --output-path=../public",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "postinstall": "npm run build"
   },
   "private": true,
   "dependencies": {
