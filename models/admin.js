@@ -1,0 +1,21 @@
+const mongoose = require('mongoose');
+
+const Admin = mongoose.model('admins', {
+  username: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  password: {
+    type: String,
+    required: true
+  },
+  imagePath: {
+    type: String
+  },
+  authToken: {
+    type: String
+  }
+});
+
+module.exports = Admin
