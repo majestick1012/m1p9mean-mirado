@@ -2,6 +2,7 @@ const express = require('express');
 const Client = require('../models/client');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const checkAuth = require('../middlewares/check-auth');
 
 const router = express.Router();
 
@@ -108,7 +109,7 @@ router.post('/login', (req, res, next) => {
 })
 
 // UPDATE CLIENT
-router.put('/:id', (req, res, next) => {
+router.put('/:id', checkAuth, (req, res, next) => {
   const client = new Client({
     username: req.body.username,
     email: req.body.email,

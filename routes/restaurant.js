@@ -1,6 +1,8 @@
 const express = require('express');
 const Restaurant = require('../models/restaurant');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const guard = require('../middlewares/guard-restaurant');
 
 const router = express.Router();
 
@@ -34,7 +36,7 @@ router.get('/:id', (req, res, next) => {
 });
 
 // INSERT ONE
-router.post('/', (req, res, next) => {
+router.post('/', guard, (req, res, next) => {
   bcrypt.hash("newpassword", 10).then(hash => {
     let username = req.body.name.toLowerCase();
     username = username.replace(/[^A-Z0-9]/ig, "") + "-ekaly";
@@ -65,7 +67,7 @@ router.post('/', (req, res, next) => {
 });
 
 // UPDATE ONE
-router.put('/:id', (req, res, next) => {
+router.put('/:id', guard, (req, res, next) => {
   let fetchedRestaurant;
 
   Restaurant.findById(req.params.id, '-password -authToken').then(restaurant => {
@@ -145,9 +147,10 @@ router.post('/login', (req, res, next) => {
           expiresIn: 3600,
           restaurant: {
             _id: fetchedRestaurant._id,
-            name: result.name,
-            address: result.address,
-            cuisine: result.cuisine,
+            name: fetchedRestaurant.name,
+            address: fetchedRestaurant.address,
+            cuisine: fetchedRestaurant.cuisine,
+            authToken: fetchedRestaurant.authToken
           }
         });
       } else {
