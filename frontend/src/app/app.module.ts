@@ -11,6 +11,9 @@ import { AuthComponent } from './auth/auth.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { RegisterComponent } from './register/register.component';
 import { HomeComponent } from './home/home.component';
+import { FormsModule } from '@angular/forms';
+import { RestaurantService } from './service/restaurant.service';
+import { RestaurantComponent } from './components/restaurant/restaurant.component';
 
 @NgModule({
   declarations: [
@@ -18,12 +21,14 @@ import { HomeComponent } from './home/home.component';
     AuthComponent,
     PageNotFoundComponent,
     RegisterComponent,
-    HomeComponent
+    HomeComponent,
+    RestaurantComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    FormsModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -32,7 +37,7 @@ import { HomeComponent } from './home/home.component';
       }
     }),
   ],
-  providers: [],
+  providers: [RestaurantService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
