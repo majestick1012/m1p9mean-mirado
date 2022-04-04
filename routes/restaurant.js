@@ -1,7 +1,6 @@
 const express = require('express');
 const Restaurant = require('../models/restaurant');
 const bcrypt = require('bcrypt');
-const { json } = require('body-parser');
 
 const router = express.Router();
 
