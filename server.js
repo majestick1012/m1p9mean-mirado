@@ -1,16 +1,21 @@
 const res = require('express/lib/response');
 const mongoose = require('mongoose');
 const db = require('./config/db');
+const path = require('path');
 
 var express = require('express');
 var nodemailer = require('nodemailer');
-const path = require('path');
 var app = express();
 var bodyParser = require('body-parser');
 
 // Variables d'environnement
-var mode = process.env.NODE_ENV || "Development";
-var port = process.env.PORT || 3000;
+const mode = process.env.NODE_ENV || "Development";
+const PORT = process.env.PORT || 3000;
+const mailUsername = process.env.MAIL_USERNAME;
+const mailPassword = process.env.MAIL_PASSWORD;
+const clientId = process.env.OAUTH_CLIENTID;
+const clientSecret = process.env.OAUTH_CLIENT_SECRET;
+const refreshToken = process.env.OAUTH_REFRESH_TOKEN;
 
 // Routes
 const clientRoutes = require("./routes/client");
@@ -35,15 +40,15 @@ app.get('/api/gmail', function (request, response) {
     service: 'gmail',
     auth: {
       type: 'OAuth2',
-      user: process.env.MAIL_USERNAME,
-      pass: process.env.MAIL_PASSWORD,
-      clientId: process.env.OAUTH_CLIENTID,
-      clientSecret: process.env.OAUTH_CLIENT_SECRET,
-      refreshToken: process.env.OAUTH_REFRESH_TOKEN
+      user: mailUsername,
+      pass: mailPassword,
+      clientId: clientId,
+      clientSecret: clientSecret,
+      refreshToken: refreshToken
     }
   });
   let mailOptions = {
-    from: process.env.MAIL_USERNAME,
+    from: mailUsername,
     to: 'majestick1012@gmail.com',
     subject: '[TEST] Nodemailer Project MEAN',
     text: 'Hi from your nodemailer project.'
@@ -58,7 +63,6 @@ app.get('/api/gmail', function (request, response) {
   });
 });
 
-const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', function loadserver() {
   console.log('Mode: ' + mode);
   console.log(`Launching the app ${process.env.APP_NAME}`);
