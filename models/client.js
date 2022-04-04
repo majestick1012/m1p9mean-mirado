@@ -28,6 +28,9 @@ const Client = mongoose.model('clients', {
   },
   authToken: {
     type: String
+  },
+  active: {
+    type: Boolean
   }
 });
 

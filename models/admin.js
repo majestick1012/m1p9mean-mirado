@@ -15,6 +15,9 @@ const Admin = mongoose.model('admins', {
   },
   authToken: {
     type: String
+  },
+  active: {
+    type: Boolean
   }
 });
 

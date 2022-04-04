@@ -15,6 +15,9 @@ const DeliveryMan = mongoose.model('deliverymans', {
   },
   authToken: {
     type: String
+  },
+  active: {
+    type: Boolean
   }
 });
 

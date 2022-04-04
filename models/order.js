@@ -36,6 +36,9 @@ const Order = mongoose.model('orders', {
   },
   deliveryDate: {
     type: Date,
+  },
+  active: {
+    type: Boolean
   }
 });
 

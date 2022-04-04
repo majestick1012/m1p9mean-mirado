@@ -21,6 +21,9 @@ const Dish = mongoose.model('dishes', {
   visibility: {
     type: Boolean,
     required: true
+  },
+  active: {
+    type: Boolean
   }
 });
 

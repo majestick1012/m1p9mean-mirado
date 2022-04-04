@@ -22,6 +22,9 @@ const Restaurant = mongoose.model('restaurants', {
   },
   authToken: {
     type: String
+  },
+  active: {
+    type: Boolean
   }
 });
 
