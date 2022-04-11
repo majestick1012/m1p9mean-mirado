@@ -3,11 +3,12 @@ const Client = require('../models/client');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const checkAuth = require('../middlewares/check-auth');
+const guardBase = require('../middlewares/guard-base');
 
 const router = express.Router();
 
 // SIGNUP ROUTE
-router.post('/signup', (req, res, next) => {
+router.post('/signup', guardBase, (req, res, next) => {
   bcrypt.hash(req.body.password, 10).then(hash => {
     const client = new Client({
       username: req.body.email,
@@ -50,7 +51,7 @@ router.post('/signup', (req, res, next) => {
 })
 
 // SIGNIN ROUTE
-router.post('/login', (req, res, next) => {
+router.post('/login', guardBase, (req, res, next) => {
   let fetchedClient;
 
   Client.findOne({ email: req.body.email }).then(user => {
@@ -140,7 +141,7 @@ router.put('/:id', checkAuth, (req, res, next) => {
 })
 
 // LOGOUT
-router.post('/logout', (req, res, next) => {
+router.post('/logout', checkAuth, (req, res, next) => {
   Client.updateOne({ _id: req.body.id }, {
     $set: {
       authToken: null,

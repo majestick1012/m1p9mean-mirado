@@ -1,6 +1,7 @@
 const express = require('express');
 var nodemailer = require('nodemailer');
 const router = express.Router();
+const guardBase = require('../middlewares/guard-base');
 
 // CONFIGURATION MAIL
 const mailUsername = process.env.MAIL_USERNAME;
@@ -10,7 +11,7 @@ const clientSecret = process.env.OAUTH_CLIENT_SECRET;
 const refreshToken = process.env.OAUTH_REFRESH_TOKEN;
 
 // SEND MAIL TEST
-router.post('/test', function (req, res) {
+router.post('/test', guardBase, function (req, res) {
   // OAuth
   let transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -25,7 +26,7 @@ router.post('/test', function (req, res) {
   });
   let mailOptions = {
     from: mailUsername,
-    to: 'majestick1012@gmail.com',
+    to: req.body.email,
     subject: '[M1P9MEAN] Test sending mail from Project MEAN',
     text: 'Hi from your nodemailer project.'
   };

@@ -110,7 +110,7 @@ router.put('/:id', guard, (req, res, next) => {
 });
 
 // LOGIN RESTAURANT
-router.post('/login', (req, res, next) => {
+router.post('/login', guardBase, (req, res, next) => {
   let fetchedRestaurant;
 
   Restaurant.findOne({ username: req.body.username }).then(restaurant => {
