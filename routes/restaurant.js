@@ -3,11 +3,12 @@ const Restaurant = require('../models/restaurant');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const guard = require('../middlewares/guard-restaurant');
+const guardBase = require('../middlewares/guard-base');
 
 const router = express.Router();
 
 // GET ALL
-router.get('/', (req, res, next) => {
+router.get('/', guardBase, (req, res, next) => {
   Restaurant.find({}, '-username -password -authToken -__v').then(result => {
     if (result) {
       res.status(200).json({
@@ -22,7 +23,7 @@ router.get('/', (req, res, next) => {
 });
 
 // GET ONE
-router.get('/:id', (req, res, next) => {
+router.get('/:id', guardBase, (req, res, next) => {
   Restaurant.findById(req.params.id, '-username -password -authToken').then(result => {
     if (result) {
       res.status(200).json({
@@ -165,7 +166,7 @@ router.post('/login', (req, res, next) => {
 });
 
 // LOGOUT RESTAURANT
-router.post('/logout', (req, res, next) => {
+router.post('/logout', guard, (req, res, next) => {
   Restaurant.updateOne({ _id: req.body.id }, {
     $set: {
       authToken: null,
