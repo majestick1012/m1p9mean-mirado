@@ -106,8 +106,8 @@ router.post('/login', guardBase, (req, res, next) => {
     });
   }).catch(e => {
     console.log(e);
-  })
-})
+  });
+});
 
 // UPDATE CLIENT
 router.put('/:id', checkAuth, (req, res, next) => {
@@ -137,8 +137,8 @@ router.put('/:id', checkAuth, (req, res, next) => {
     }
   }).catch(e => {
     console.log(e);
-  })
-})
+  });
+});
 
 // LOGOUT
 router.post('/logout', checkAuth, (req, res, next) => {
@@ -154,7 +154,7 @@ router.post('/logout', checkAuth, (req, res, next) => {
     }
   }).catch(e => {
     console.log(e);
-  })
+  });
 });
 
 module.exports = router

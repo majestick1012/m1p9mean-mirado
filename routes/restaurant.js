@@ -27,7 +27,7 @@ router.get('/:id', guardBase, (req, res, next) => {
   Restaurant.findById(req.params.id, '-username -password -authToken').then(result => {
     if (result) {
       res.status(200).json({
-        message: "Getting the restaurant successful!",
+        message: "Getting the restaurant successfully!",
         restaurant: result
       });
     } else {
@@ -59,7 +59,7 @@ router.post('/', guard, (req, res, next) => {
             address: result.address,
             cuisine: result.cuisine,
           }
-        })
+        });
       } else {
         res.status(500).json({ message: "Error creating restaurant " });
       }
