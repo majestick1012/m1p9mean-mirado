@@ -38,8 +38,30 @@ router.get('/:id', guardBase, (req, res, next) => {
   })
 });
 
-// GET ORDERS STATUS 1
+// GET ORDERS STATUS EN COURS
 router.get('/getOrders/:id', guard, (req, res, next) => {
+  Order.find({
+    restaurant: {
+      $in: mongoose.Types.ObjectId(req.params.id)
+    },
+    status: {
+      $gt: 0, $lt: 50
+    }
+  }).then(result => {
+    if(result) {
+      res.status(200).json({
+        message: "Orders fetched successfully",
+        number: result.length,
+        orders: result
+      });
+    } else {
+      res.status(200).json({ message: "Aucune commande", number: 0, orders: [] });
+    }
+  });
+});
+
+// GET ALL ORDERS
+router.get('/getAllOrders/:id', guard, (req, res, next) => {
   Order.find({
     restaurant: {
       $in: mongoose.Types.ObjectId(req.params.id)
@@ -53,6 +75,29 @@ router.get('/getOrders/:id', guard, (req, res, next) => {
       });
     } else {
       res.status(200).json({ message: "Aucune commande", number: 0, orders: [] });
+    }
+  });
+});
+
+// GET BENEF
+router.get('/getProfit/:id', guard, (req, res, next) => {
+  Order.find({
+    restaurant: {
+      $in: mongoose.Types.ObjectId(req.params.id)
+    },
+    status: 50
+  }).then(result => {
+    if(result) {
+      let benef = 0;
+      result.forEach(element => {
+        benef += element.price;
+      });
+      res.status(200).json({
+        message: "Orders fetched successfully",
+        profit: benef,
+      });
+    } else {
+      res.status(200).json({ message: "Aucune commande", profit: 0 });
     }
   });
 });
