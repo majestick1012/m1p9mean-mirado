@@ -2,6 +2,8 @@ const res = require('express/lib/response');
 const mongoose = require('mongoose');
 const db = require('./config/db');
 const path = require('path');
+const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser');
 
 var express = require('express');
 var app = express();
@@ -24,6 +26,27 @@ app.set('view engine', 'ejs');
 app.use("/api/client", clientRoutes);
 app.use("/api/restaurant", restaurantRoutes);
 app.use("/api/mail", mailRoutes);
+
+// need cookieParser middleware before we can do anything with cookies
+app.use(cookieParser());
+
+// set a cookie
+app.use(function (req, res, next) {
+  // check if client sent cookie
+  var cookie = req.cookies.ekalyAntiForgeryToken;
+  const token = jwt.sign(
+    { username: "ekaly" },
+    "secret_ekaly",
+    { expiresIn: "24h" }
+  );
+  if (cookie === undefined) {
+    res.cookie('ekalyAntiForgeryToken', token, { expiresIn: "24h", httpOnly: true });
+    //console.log('cookie created successfully');
+  } else {
+    //console.log('cookie exists', cookie);
+  }
+  next();
+});
 
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname + '/public/index.html'));
