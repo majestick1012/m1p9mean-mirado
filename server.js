@@ -19,6 +19,7 @@ const restaurantRoutes = require("./routes/restaurant");
 const mailRoutes = require("./routes/mail");
 const dishRoutes = require("./routes/dish");
 const adminRoutes = require("./routes/admin");
+const orderRoutes = require("./routes/order");
 
 // ExpressJS
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -28,7 +29,9 @@ app.set('view engine', 'ejs');
 app.use("/api/client", clientRoutes);
 app.use("/api/restaurant", restaurantRoutes);
 app.use("/api/mail", mailRoutes);
+app.use("/api/dish", dishRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/order", orderRoutes);
 
 // need cookieParser middleware before we can do anything with cookies
 app.use(cookieParser());

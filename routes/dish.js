@@ -3,13 +3,34 @@ const Dish = require('../models/dish');
 const Restaurant = require('../models/restaurant');
 const guardBase = require('../middlewares/guard-base');
 const guard = require('../middlewares/guard-restaurant');
-const { json } = require('body-parser');
+const { default: mongoose } = require('mongoose');
+const { ObjectId } = require('mongodb');
 
 const router = express.Router();
 
 // GET ALL
 router.get('/', guardBase, (req, res, next) => {
   Dish.find({}, '-__v').then(result => {
+    if (result) {
+      res.status(200).json({
+        message: "Dishes fetched successfully!",
+        number: result.length,
+        dishes: result
+      });
+    } else {
+      res.status(200).json({ message: "Aucun plat", dishes: [] });
+    }
+  })
+});
+
+// GET MANY
+router.get('/searchById', guardBase, (req, res, next) => {
+  const ids = req.body.dishes.map((d) => d.dish).map(ObjectId);
+  Dish.find({
+    _id: {
+      $in: ids
+    }
+  }, '-__v').then(result => {
     if (result) {
       res.status(200).json({
         message: "Dishes fetched successfully!",
