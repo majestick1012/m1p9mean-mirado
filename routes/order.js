@@ -32,6 +32,8 @@ router.post('/sendOrder', guard, (req, res, next) => {
                 tables.forEach(element => {
                   totalPrice += element.numberOfDish * dishes.find(d => d._id.equals(element.dish)).price;
                 });
+                const currentDate = new Date();
+                const dateDebut = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
                 const order = new Order({
                   client: user,
                   dishes: tables,
@@ -39,7 +41,7 @@ router.post('/sendOrder', guard, (req, res, next) => {
                   restaurant: resto,
                   price: totalPrice,
                   status: 10,
-                  deliveryDate: null,
+                  deliveryDate: dateDebut,
                   active: true,
                 });
 

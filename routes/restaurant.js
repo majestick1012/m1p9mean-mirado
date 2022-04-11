@@ -48,7 +48,7 @@ router.get('/getOrders/:id', guard, (req, res, next) => {
       $gt: 0, $lt: 50
     }
   }).then(result => {
-    if(result) {
+    if (result) {
       res.status(200).json({
         message: "Orders fetched successfully",
         number: result.length,
@@ -67,7 +67,7 @@ router.get('/getAllOrders/:id', guard, (req, res, next) => {
       $in: mongoose.Types.ObjectId(req.params.id)
     }
   }).then(result => {
-    if(result) {
+    if (result) {
       res.status(200).json({
         message: "Orders fetched successfully",
         number: result.length,
@@ -87,7 +87,7 @@ router.get('/getProfit/:id', guard, (req, res, next) => {
     },
     status: 50
   }).then(result => {
-    if(result) {
+    if (result) {
       let benef = 0;
       result.forEach(element => {
         benef += element.price;
@@ -97,7 +97,7 @@ router.get('/getProfit/:id', guard, (req, res, next) => {
         profit: benef,
       });
     } else {
-      res.status(200).json({ message: "Aucune commande", profit: 0 });
+      res.status(200).json({ message: "Aucun profit", profit: 0 });
     }
   });
 });

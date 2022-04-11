@@ -1,5 +1,6 @@
 const express = require('express');
 const Admin = require('../models/admin');
+const Order = require('../models/order');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const guard = require('../middlewares/guard-admin');
@@ -7,12 +8,94 @@ const guardBase = require('../middlewares/guard-base');
 
 const router = express.Router();
 
+// GET ALL ORDERS
+router.get('/getAllOrders', guard, (req, res, next) => {
+  Order.find({}).then(result => {
+    if (result) {
+      res.status(200).json({
+        message: "Orders fetched successfully",
+        number: result.length,
+        orders: result
+      });
+    } else {
+      res.status(200).json({ message: "Aucune commande", number: 0, orders: [] });
+    }
+  });
+});
+
+// GET ALL ORDERS
+router.get('/getAllProfit', guard, (req, res, next) => {
+  Order.find({ status: 50 }).then(result => {
+    if (result) {
+      let benef = 0;
+      result.forEach(element => {
+        benef += element.price;
+      });
+      res.status(200).json({
+        message: "Orders fetched successfully",
+        profit: benef,
+      });
+    } else {
+      res.status(200).json({ message: "Aucun profit", profit: 0 });
+    }
+  });
+});
+
+// GET ALL ORDERS
+router.get('/getAllProfitByRestaurant/:id', guard, (req, res, next) => {
+  Order.find({ 
+    restaurant: {
+      $in: mongoose.Types.ObjectId(req.params.id)
+    },
+    status: 50 
+  }).then(result => {
+    if (result) {
+      let benef = 0;
+      result.forEach(element => {
+        benef += element.price;
+      });
+      res.status(200).json({
+        message: "Orders fetched successfully",
+        profit: benef,
+      });
+    } else {
+      res.status(200).json({ message: "Aucun profit", profit: 0 });
+    }
+  });
+});
+
+// GET ALL ORDERS
+router.get('/getAllProfitByDay', guard, (req, res, next) => {
+  const currentDate = new Date();
+  const dateDebut = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
+  Order.find({
+    status: 50,
+    deliveryDate: {
+      $gte: dateDebut,
+      $lte: dateDebut.setDate(currentDate.getDate() + 1)
+    }
+  }).then(result => {
+    if (result) {
+      let benef = 0;
+      result.forEach(element => {
+        benef += element.price;
+      });
+      res.status(200).json({
+        message: "Profit fetched successfully",
+        profit: benef,
+      });
+    } else {
+      res.status(200).json({ message: "Aucun profit", profit: 0 });
+    }
+  });
+});
+
 // LOGIN
 router.post('/login', guardBase, (req, res, next) => {
   let fetchedAdmin;
 
   Admin.findOne({ username: req.body.username }).then(user => {
-    if(!user) {
+    if (!user) {
       return res.status(401).json({
         message: "Auth failed! No such user"
       });
@@ -21,7 +104,7 @@ router.post('/login', guardBase, (req, res, next) => {
     fetchedAdmin = user;
     return bcrypt.compare(req.body.password, user.password);
   }).then(result => {
-    if(!result) {
+    if (!result) {
       return res.status(401).json({
         message: "Auth failed! Incorrect password"
       });
@@ -41,7 +124,7 @@ router.post('/login', guardBase, (req, res, next) => {
         authToken: token
       }
     }).then(result => {
-      if(result) {
+      if (result) {
         res.status(200).json({
           expiresIn: 28800,
           admin: {
