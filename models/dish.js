@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const Dish = mongoose.model('dish', {
+const Dish = mongoose.model('dishes', {
   name: {
     type: String,
     required: true,
@@ -15,7 +15,7 @@ const Dish = mongoose.model('dish', {
   },
   restaurant: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Restaurant",
+    ref: "restaurants",
     required: true
   },
   visibility: {

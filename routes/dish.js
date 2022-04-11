@@ -23,6 +23,26 @@ router.get('/', guardBase, (req, res, next) => {
   })
 });
 
+// SEARCH
+router.get('/search/:criteria', guardBase, (req, res, next) => {
+  const criteria = req.params.criteria;
+  Dish.find({
+    $or: [
+      { name: { $regex: criteria, $options: 'i' } }
+    ],
+  }).then(result => {
+    if (result) {
+      res.status(200).json({
+        message: "Dishes fetched successfully!",
+        number: result.length,
+        dishes: result
+      });
+    } else {
+      res.status(200).json({ message: "Aucun plat", number: 0, dishes: [] });
+    }
+  })
+});
+
 // GET MANY
 router.get('/searchById', guardBase, (req, res, next) => {
   const ids = req.body.dishes.map((d) => d.dish).map(ObjectId);

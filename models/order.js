@@ -1,15 +1,15 @@
 const mongoose = require('mongoose');
 
-const Order = mongoose.model('order', {
+const Order = mongoose.model('orders', {
   client: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Client",
+    ref: "clients",
     required: true
   },
   dishes: [{
     dish: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Dish",
+      ref: "dishes",
       required: true
     },
     numberOfDish: {
@@ -19,11 +19,11 @@ const Order = mongoose.model('order', {
   }],
   deliveryMan: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "DeliveryMan",
+    ref: "deliverymans",
   },
   restaurant: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Restaurant",
+    ref: "restaurants",
     required: true
   },
   price: {
