@@ -14,6 +14,8 @@ import { HomeComponent } from './home/home.component';
 import { FormsModule } from '@angular/forms';
 import { RestaurantService } from './service/restaurant.service';
 import { RestaurantComponent } from './components/restaurant/restaurant.component';
+import { CookieService } from 'ngx-cookie-service';
+import { LogService } from './service/log.service';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,7 @@ import { RestaurantComponent } from './components/restaurant/restaurant.componen
       }
     }),
   ],
-  providers: [RestaurantService],
+  providers: [RestaurantService, CookieService, LogService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

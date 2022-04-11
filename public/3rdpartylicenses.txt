@@ -19,6 +19,9 @@ MIT
 @ngx-translate/http-loader
 MIT
 
+ngx-cookie-service
+MIT
+
 rxjs
 Apache-2.0
                                Apache License

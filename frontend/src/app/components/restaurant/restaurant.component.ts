@@ -9,7 +9,8 @@ import { Restaurant } from 'src/model/restaurant';
 })
 export class RestaurantComponent implements OnInit {
 
-  restaurants?: Restaurant[];
+  restaurants?: Restaurant[] = [];
+  message: String = "";
   constructor(private restaurantService: RestaurantService) { }
 
   ngOnInit(): void {
@@ -20,8 +21,8 @@ export class RestaurantComponent implements OnInit {
     this.restaurantService.getRestaurants()
     .subscribe({
       next: (data) => {
-        this.restaurants = data;
-        console.log(data);
+        this.restaurants = data.restaurants;
+        this.message = data.message;
       },
       error: (e) => console.error(e)
     });

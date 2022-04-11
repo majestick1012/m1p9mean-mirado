@@ -4,6 +4,7 @@ const db = require('./config/db');
 const path = require('path');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 
 var express = require('express');
 var app = express();
@@ -25,6 +26,7 @@ const deliveryManRoutes = require("./routes/deliveryman");
 // ExpressJS
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
+app.use(cors());
 app.use(bodyParser.json());
 app.set('view engine', 'ejs');
 app.use("/api/client", clientRoutes);
@@ -44,14 +46,12 @@ app.use(function (req, res, next) {
   var cookie = req.cookies.ekalyAntiForgeryToken;
   const token = jwt.sign(
     { username: "ekaly" },
-    "secret_ekaly",
+    process.env.SECRET_BASE,
     { expiresIn: "24h" }
   );
   if (cookie === undefined) {
-    res.cookie('ekalyAntiForgeryToken', token, { expiresIn: "24h", httpOnly: true });
-    //console.log('cookie created successfully');
+    res.cookie('_RequestAntiForgeryToken', token, { expiresIn: "24h" });
   } else {
-    //console.log('cookie exists', cookie);
   }
   next();
 });

@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: "http://localhost:3000/api"
+  apiUrl: "http://localhost:3000/api",
+  secret_token: "S8bB49S8pM5UH**z@hL@#@csxg65bXSdNfvrB8aJ"
 };
 
 /*
