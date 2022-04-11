@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const Order = mongoose.model('orders', {
+const Order = mongoose.model('order', {
   client: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Client",

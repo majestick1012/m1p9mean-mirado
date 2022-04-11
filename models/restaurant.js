@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const Restaurant = mongoose.model('restaurants', {
+const Restaurant = mongoose.model('restaurant', {
   name: {
     type: String,
     required: true

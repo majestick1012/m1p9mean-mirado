@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const Client = mongoose.model('clients', {
+const Client = mongoose.model('client', {
   username: {
     type: String,
     required: true,

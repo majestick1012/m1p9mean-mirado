@@ -3,7 +3,6 @@ const Order = require('../models/order');
 const Dish = require('../models/dish');
 const Client = require('../models/client');
 const Restaurant = require('../models/restaurant');
-const guardBase = require('../middlewares/guard-base');
 const guard = require('../middlewares/check-auth');
 const { default: mongoose } = require('mongoose');
 
@@ -33,7 +32,6 @@ router.post('/sendOrder', guard, (req, res, next) => {
                 tables.forEach(element => {
                   totalPrice += element.numberOfDish * dishes.find(d => d._id.equals(element.dish)).price;
                 });
-                console.log(totalPrice);
                 const order = new Order({
                   client: user,
                   dishes: tables,

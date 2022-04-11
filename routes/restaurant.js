@@ -1,5 +1,7 @@
 const express = require('express');
 const Restaurant = require('../models/restaurant');
+const Order = require('../models/order');
+const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const guard = require('../middlewares/guard-restaurant');
@@ -17,7 +19,7 @@ router.get('/', guardBase, (req, res, next) => {
         restaurants: result
       });
     } else {
-      res.status(200).json({ message: "Aucun restaurant", restaurants: [] });
+      res.status(200).json({ message: "Aucun restaurant", number: 0, restaurants: [] });
     }
   })
 });
@@ -34,6 +36,25 @@ router.get('/:id', guardBase, (req, res, next) => {
       res.status(404).json({ message: "Restaurant not found" });
     }
   })
+});
+
+// GET ORDERS STATUS 1
+router.get('/getOrders/:id', guard, (req, res, next) => {
+  Order.find({
+    restaurant: {
+      $in: mongoose.Types.ObjectId(req.params.id)
+    }
+  }).then(result => {
+    if(result) {
+      res.status(200).json({
+        message: "Orders fetched successfully",
+        number: result.length,
+        orders: result
+      });
+    } else {
+      res.status(200).json({ message: "Aucune commande", number: 0, orders: [] });
+    }
+  });
 });
 
 // INSERT ONE
